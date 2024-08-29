@@ -1,0 +1,23 @@
+# Virtual environment
+venv/
+.venv/
+
+# Python compiled files
+__pycache__/
+*.py[cod]
+
+# IDE and editor-specific files
+.vscode/
+.idea/
+.pytest_cache/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# Data folder (if you're storing runtime-generated data)
+data/
+
+# Environment variables file
+.env
