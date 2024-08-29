@@ -47,3 +47,12 @@ class UserManager:
             print(f"User '{username}' deleted successfully.")
         else:
             print(f"User '{username}' not found.")
+
+    def login_user(self, username, password):
+        user = self.users.get(username)
+        if user and user.password == password:
+            print(f"User '{username}' logged in successfully.")
+            return user
+        else:
+            print("Invalid username or password.")
+            return None
