@@ -29,8 +29,12 @@ class User:
     def remove_friend(self, friend):
         if friend in self.friends:
             self.friends.remove(friend)
+            friend.friends.remove(self)
+            print(f"{friend.username} has been removed from your friends list.")
             return True
-        return False
+        else:
+            print(f"{friend.username} is not in your friends list.")
+            return False
 
     def send_friend_request(self, other_user):
         if other_user not in self.friend_requests and other_user not in self.friends:
