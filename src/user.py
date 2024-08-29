@@ -1,3 +1,6 @@
+import bcrypt
+
+
 class User:
     user_count = 0  # Class attribute to generate unique users IDs
 
@@ -6,8 +9,14 @@ class User:
         self.user_id = User.user_count
         self.username = username
         self.email = email
-        self.password = password
+        self.password = self.hash_password(password)
         self.friends = []
+
+    def hash_password(self, password):
+        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
 
     def __repr__(self):
         return f"User(id={self.user_id}, username={self.username}, email={self.email})"
@@ -50,7 +59,7 @@ class UserManager:
 
     def login_user(self, username, password):
         user = self.users.get(username)
-        if user and user.password == password:
+        if user and user.check_password(password):
             print(f"User '{username}' logged in successfully.")
             return user
         else:
