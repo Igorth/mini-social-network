@@ -5,7 +5,7 @@ from post import Post
 class User:
     user_count = 0  # Class attribute to generate unique users IDs
 
-    def __init__(self, username, email, password):
+    def __init__(self, username: str, email: str, password: str):
         User.user_count += 1
         self.user_id = User.user_count
         self.username = username
@@ -15,20 +15,20 @@ class User:
         self.friend_requests = []
         self.posts = []
 
-
-    def hash_password(self, password):
+    @staticmethod
+    def hash_password(password: str) -> str:
         return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
     def check_password(self, password):
         return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
 
-    def add_friend(self, friend):
+    def add_friend(self, friend: 'User'):
         if friend not in self.friends:
             self.friends.append(friend)
             return True
         return False
 
-    def remove_friend(self, friend):
+    def remove_friend(self, friend: 'User') -> bool:
         if friend in self.friends:
             self.friends.remove(friend)
             friend.friends.remove(self)
@@ -38,14 +38,14 @@ class User:
             print(f"{friend.username} is not in your friends list.")
             return False
 
-    def send_friend_request(self, other_user):
+    def send_friend_request(self, other_user: 'User'):
         if other_user not in self.friend_requests and other_user not in self.friends:
             other_user.friend_requests.append(self)
             print(f"Friend request sent to {other_user.username}")
         else:
             print(f"Cannot send friend request to {other_user.username}")
 
-    def accept_friend_request(self, other_user):
+    def accept_friend_request(self, other_user: 'User'):
         if other_user in self.friend_requests:
             self.friends.append(other_user)
             other_user.friends.append(self)
@@ -54,7 +54,7 @@ class User:
         else:
             print(f"No friend request from {other_user.username} to accepted.")
 
-    def reject_friend_request(self, other_user):
+    def reject_friend_request(self, other_user: 'User'):
         if other_user in self.friend_requests:
             self.friend_requests.remove(other_user)
             print(f"Friend request from {other_user.username} rejected.")
@@ -64,7 +64,7 @@ class User:
     def __repr__(self):
         return f"User(id={self.user_id}, username={self.username}, email={self.email})"
 
-    def create_post(self, content):
+    def create_post(self, content: str) -> Post:
         new_post = Post(author=self, content=content)
         self.posts.append(new_post)
         print(f"Post created: {new_post}")
@@ -74,7 +74,7 @@ class User:
         for post in self.posts:
             print(post)
 
-    def delete_post(self, post_id):
+    def delete_post(self, post_id: int) -> bool:
         post_to_delete = next((post for post in self.posts if post.post_id == post_id), None)
         if post_to_delete:
             self.posts.remove(post_to_delete)
