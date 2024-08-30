@@ -1,4 +1,5 @@
 import bcrypt
+from post import Post
 
 
 class User:
@@ -12,6 +13,7 @@ class User:
         self.password = self.hash_password(password)
         self.friends = []
         self.friend_requests = []
+        self.posts = []
 
 
     def hash_password(self, password):
@@ -61,6 +63,26 @@ class User:
 
     def __repr__(self):
         return f"User(id={self.user_id}, username={self.username}, email={self.email})"
+
+    def create_post(self, content):
+        new_post = Post(author=self, content=content)
+        self.posts.append(new_post)
+        print(f"Post created: {new_post}")
+        return new_post
+
+    def view_posts(self):
+        for post in self.posts:
+            print(post)
+
+    def delete_post(self, post_id):
+        post_to_delete = next((post for post in self.posts if post.post_id == post_id), None)
+        if post_to_delete:
+            self.posts.remove(post_to_delete)
+            print(f"Post deleted: {post_to_delete}")
+            return True
+        else:
+            print(f"No post found with ID {post_id}")
+            return False
 
 
 class UserManager:

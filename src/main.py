@@ -7,15 +7,14 @@ user_manager = UserManager()
 user_john = user_manager.register_user("john_doe", "john@test.ca", "password123")
 user_jane = user_manager.register_user("jane_doe", "jane@test.ca", "password1")
 
-# Send a friend request from John to Jane
-user_john.send_friend_request(user_jane)
+# Create posts
+post_1 = user_john.create_post("This is John's post")
+post_2 = user_jane.create_post("This is Jane's post")
+post_3 = user_jane.create_post("This is Jane's post")
 
-# Jane accepts the friend request
-user_jane.accept_friend_request(user_john)
+# View posts
+print("\nJohn's posts:")
+user_john.view_posts()
 
-# Remove friend
-user_john.remove_friend(user_jane)
-
-# Check friendship status
-print(user_john.friends)
-print(user_jane.friends)
+print("\nJane's posts:")
+user_jane.view_posts()
