@@ -1,5 +1,14 @@
 import bcrypt
+import datetime
 from src.post import Post
+
+
+class Message:
+    def __init__(self, sender, receiver, content):
+        self.sender = sender
+        self.receiver = receiver
+        self.content = content
+        self.timestamp = datetime.datetime.now()
 
 
 class User:
@@ -14,6 +23,7 @@ class User:
         self.friends = []
         self.friend_requests = []
         self.posts = []
+        self.messages = []
 
     @staticmethod
     def hash_password(password: str) -> str:
@@ -64,6 +74,7 @@ class User:
     def __repr__(self):
         return f"User(id={self.user_id}, username={self.username}, email={self.email})"
 
+    # POST----------------------------------------------------------------
     def create_post(self, content: str) -> Post:
         new_post = Post(author=self, content=content)
         self.posts.append(new_post)
@@ -83,6 +94,15 @@ class User:
         else:
             print(f"No post found with ID {post_id}")
             return False
+
+    # MESSAGE----------------------------------------------------------------
+    def send_message(self, receiver, content):
+        message = Message(self, receiver, content)
+        receiver.messages.append(message)
+        return message
+
+    def get_messages(self):
+        return self.messages
 
 
 class UserManager:
