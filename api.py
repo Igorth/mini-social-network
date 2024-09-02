@@ -1,9 +1,13 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from typing import List
 
 
 app = FastAPI()
+
+app.mount('/static', StaticFiles(directory="static"), name="static")
 
 
 # Define pydantic models
@@ -33,6 +37,12 @@ class InMemoryStorage:
 
 
 storage = InMemoryStorage()
+
+
+@app.get("/", response_class=HTMLResponse)
+async def read_root():
+    with open("templates/index.html", "r") as file:
+        return file.read()
 
 
 @app.post("/users/")
